@@ -1,0 +1,63 @@
+﻿<Window x:Class="ScreenSaver.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:system="clr-namespace:System;assembly=mscorlib"
+        xmlns:drawing="http://www.microsoft.net/drawing"
+        xmlns:local="clr-namespace:ScreenSaver"
+        mc:Ignorable="d" WindowStyle="None"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid x:Name="MainGrid">
+        <drawing:PanningItems ItemsSource="{Binding stringCollection,RelativeSource={RelativeSource AncestorType=local:MainWindow}}"
+                              x:Name="MyPanningItems">
+            <drawing:PanningItems.ItemTemplate>
+                <DataTemplate>
+                    <Rectangle>
+                        <Rectangle.Fill>
+                            <ImageBrush ImageSource="{Binding .}"/>
+                        </Rectangle.Fill>
+                    </Rectangle>
+                </DataTemplate>
+            </drawing:PanningItems.ItemTemplate>
+        </drawing:PanningItems>
+        <Grid  HorizontalAlignment="Center" 
+               VerticalAlignment="Top"
+                Margin="0,50,0,0">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid.Resources>
+                <Style TargetType="TextBlock">
+                    <Setter Property="FontSize" Value="90"/>
+                    <Setter Property="FontWeight" Value="Black"/>
+                    <Setter Property="Foreground" Value="White"/>
+                </Style>
+            </Grid.Resources>
+            <WrapPanel>
+                <TextBlock Text="{Binding Hour,RelativeSource={RelativeSource AncestorType=local:MainWindow}}"/>
+                <TextBlock Text=":" x:Name="PART_TextBlock">
+                    <TextBlock.Triggers>
+                        <EventTrigger RoutedEvent="FrameworkElement.Loaded">
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <DoubleAnimation Duration="00:00:01"
+                                                 From="0"
+                                                 To="1"
+                                                 Storyboard.TargetName="PART_TextBlock"
+                                                 Storyboard.TargetProperty="Opacity"
+                                                 RepeatBehavior="Forever"
+                                                 FillBehavior="Stop"/>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                    </TextBlock.Triggers>
+                </TextBlock>
+                <TextBlock Text="{Binding Minute,RelativeSource={RelativeSource AncestorType=local:MainWindow}}"/>
+            </WrapPanel>
+            <TextBlock Grid.Row="1" FontSize="45" HorizontalAlignment="Center" 
+                       Text="{Binding Date,RelativeSource={RelativeSource AncestorType=local:MainWindow}}"/>
+        </Grid>
+    </Grid>
+</Window>
